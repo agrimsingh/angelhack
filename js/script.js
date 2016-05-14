@@ -9,7 +9,8 @@ var width = 320,
     last,
     mouseIsDown = false,
     points = [],
-    strokeId = 0;
+    strokeId = 0
+    $cvs = $(cvs);
 
 cvs.width = width;
 cvs.height = height;
@@ -34,7 +35,6 @@ function onMouseDown(event){
     event.stopPropagation();
 
     last = getLocalCoordinates(event);
-
     mouseIsDown = true;
 
     strokeId++;
@@ -51,7 +51,6 @@ function onMouseMove(event){
     }
 
     var mouse = getLocalCoordinates(event);
-
     line(last.x, last.y, mouse.x, mouse.y);
     last = mouse;
 
@@ -163,9 +162,10 @@ function displayMatches(matches){
 }
 
 function getLocalCoordinates(event){
+    var offset = $cvs.offset();
     return {
-      x: event.clientX - cvs.offsetLeft + window.scrollX,
-      y: event.clientY - cvs.offsetTop + window.scrollY,
+      x: event.clientX - offset.left,
+      y: event.clientY - offset.top,
     };
 }
 
