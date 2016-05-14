@@ -1,13 +1,14 @@
+/* eslint-disable new-cap, no-param-reassign */
 import outlines from 'outlines';
+import recognizer from './recognizer';
 import $ from 'jquery';
 
-const width = 320,
-  height = 480,
-  laneWidth = width / 8,
-  cvs = document.getElementById('canvas'),
-  ctx = cvs.getContext('2d'),
-  recognizer = new outlines.Recognizer(),
-  $cvs = $(cvs);
+const width = 320;
+const height = 480;
+const laneWidth = width / 8;
+const cvs = document.getElementById('canvas');
+const ctx = cvs.getContext('2d');
+const $cvs = $(cvs);
 let last;
 let mouseIsDown = false;
 let points = [];
@@ -17,7 +18,7 @@ cvs.width = width;
 cvs.height = height;
 
 function line(x0, y0, x1, y1, color) {
-  ctx.strokeStyle = color ? color : 'blue';
+  ctx.strokeStyle = color || 'blue';
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
   ctx.lineWidth = 3;
@@ -27,7 +28,91 @@ function line(x0, y0, x1, y1, color) {
   ctx.stroke();
 }
 
+function getLocalCoordinates(event) {
+  const offset = $cvs.offset();
+  return {
+    x: event.clientX - offset.left,
+    y: event.clientY - offset.top + $(window).scrollTop(),
+  };
+}
 
+function drawPointCloud(pointCloud, x, y, scale, color) {
+  for (let i = 1; i < pointCloud.length; i++) {
+        // Draw from the previous point to this point so long as they have the same
+        // stroke id
+    if (pointCloud[i - 1].ID === pointCloud[i].ID) {
+      line(
+        pointCloud[i - 1].X * scale + x + scale / 2,
+        pointCloud[i - 1].Y * scale + y + scale / 2,
+        pointCloud[i].X * scale + x + scale / 2,
+        pointCloud[i].Y * scale + y + scale / 2,
+        color
+      );
+    }
+  }
+}
+
+function initializeCanvas() {
+  ctx.clearRect(0, 0, cvs.width, cvs.height);
+
+    // Draw all the set of shapes
+  for (let i = 0; i < recognizer.PointClouds.length; i++) {
+    drawPointCloud(
+      recognizer.PointClouds[i].Points,
+      (i % 8) * laneWidth,
+      380 + Math.floor(i / 8) * laneWidth,
+      laneWidth * 0.9, '#9f9fff'
+    );
+  }
+}
+
+function getShade(score) {
+  const intensity = Math.floor((1.0 - score) * 255);
+  return `rgb(${intensity}, ${intensity}, ${intensity})`;
+}
+
+function getPointCloud(name) {
+  let pointCloud;
+  // Find the point cloud based on the supplied name
+  for (let i = 0; i < recognizer.PointClouds.length; i++) {
+    if (recognizer.PointClouds[i].Name === name) {
+      pointCloud = recognizer.PointClouds[i].Points;
+      break;
+    }
+  }
+  return pointCloud;
+}
+
+function displayMatches(matches) {
+  const adjustedWidth = Math.floor(laneWidth * 1.2);
+  // Clear background of shapes
+  ctx.clearRect(cvs.width - adjustedWidth, 0, adjustedWidth, 370);
+
+  if (matches.length) {
+    drawPointCloud(outlines.Normalize(points), cvs.width - laneWidth, 300, laneWidth, 'red');
+  }
+
+  const matchesElem = document.getElementById('matches');
+  let output = '<div>';
+
+  for (let i = 0; i < matches.length; i++) {
+    const rank = matches[i].Score.toFixed(2) * 100;
+    if (rank > 1) {
+      // Render Canvas Shape Feedback
+      drawPointCloud(
+        getPointCloud(matches[i].Name),
+        cvs.width - laneWidth,
+        10 + i * laneWidth * 1.2,
+        laneWidth,
+        getShade(matches[i].Score)
+      );
+      // Render DOM UI
+      output += `<span>'${matches[i].Name}' : ${(rank.toFixed(1))}</span></br>`;
+    }
+  }
+  output += '</div>';
+  matchesElem.innerHTML = output;
+}
 
 function onMouseDown(event) {
   event.preventDefault();
@@ -49,7 +134,7 @@ function onMouseMove(event) {
     return;
   }
 
-  var mouse = getLocalCoordinates(event);
+  const mouse = getLocalCoordinates(event);
   line(last.x, last.y, mouse.x, mouse.y);
   last = mouse;
 
@@ -90,15 +175,11 @@ cvs.addEventListener('touchstart', onTouchStart, false);
 cvs.addEventListener('touchmove', onTouchMove, false);
 cvs.addEventListener('touchend', onTouchEnd, false);
 
-var cancelButton = document.getElementById('cancel');
-cancelButton.addEventListener('touchstart', reset, false);
-cancelButton.addEventListener('mousedown', reset, true);
-
 function reset(event) {
   event.preventDefault();
   event.stopPropagation();
 
-  var result = recognizer.Recognize(points);
+//   const result = recognizer.Recognize(points);
   points = [];
   strokeId = 0;
 
@@ -107,99 +188,14 @@ function reset(event) {
   document.getElementById('matches').innerHTML = '';
 }
 
+const cancelButton = document.getElementById('cancel');
+cancelButton.addEventListener('touchstart', reset, false);
+cancelButton.addEventListener('mousedown', reset, true);
 
-document.addEventListener('keydown', function (event) {
+document.addEventListener('keydown', (event) => {
   if (event.keyCode === 32) {
     reset(event);
   }
 }, false);
-
-function initializeCanvas() {
-  ctx.clearRect(0, 0, cvs.width, cvs.height);
-
-    // Draw all the set of shapes
-  for (let i = 0; i < recognizer.PointClouds.length; i++) {
-    drawPointCloud(recognizer.PointClouds[i].Points, (i % 8) * laneWidth, 380 + Math.floor(i / 8) * laneWidth, laneWidth * 0.9, '#9f9fff');
-  }
-}
-
-function displayMatches(matches) {
-  var adjustedWidth = Math.floor(laneWidth * 1.2);
-  // Clear background of shapes
-  ctx.clearRect(cvs.width - adjustedWidth, 0, adjustedWidth, 370);
-
-  if (matches.length) {
-    drawPointCloud(outlines.Normalize(points), cvs.width - laneWidth, 300, laneWidth, 'red');
-  }
-
-  var matchesElem = document.getElementById('matches'),
-    output = '<div>',
-    i,
-    rank;
-
-  for (i = 0; i < matches.length; i++) {
-
-    rank = matches[i].Score.toFixed(2) * 100;
-
-    if (rank > 1) {
-          // Render Canvas Shape Feedback
-        drawPointCloud(
-            getPointCloud(matches[i].Name),
-            cvs.width - laneWidth,
-            10 + i * laneWidth * 1.2,
-            laneWidth,
-            getShade(matches[i].Score));
-
-          // Render DOM UI
-        output += "<span>'" + matches[i].Name + "' : " + (rank.toFixed(1)) + '</span></br>';
-      }
-  }
-  output += '</div>';
-  matchesElem.innerHTML = output;
-
-}
-
-function getLocalCoordinates(event) {
-  var offset = $cvs.offset();
-  return {
-      x: event.clientX - offset.left,
-      y: event.clientY - offset.top + $(window).scrollTop(),
-    };
-}
-
-function getShade(score) {
-  return 'rgb(' + Math.floor((1.0 - score) * 255) + ', ' + Math.floor((1.0 - score) * 255) + ', ' + Math.floor((1.0 - score) * 255) + ')';
-}
-
-function getPointCloud(name) {
-  var i, points;
-
-  // Find the point cloud based on the supplied name
-  for (i = 0; i < recognizer.PointClouds.length; i++) {
-    if (recognizer.PointClouds[i].Name === name) {
-        points = recognizer.PointClouds[i].Points;
-        break;
-      }
-  }
-  return points;
-}
-
-function drawPointCloud(points, x, y, scale, color) {
-  var i;
-
-  for (i = 1; i < points.length; i++) {
-        // Draw from the previous point to this point so long as they have the same
-        // stroke id
-      if (points[i - 1].ID === points[i].ID) {
-          line(
-              points[i - 1].X * scale + x + scale / 2,
-              points[i - 1].Y * scale + y + scale / 2,
-              points[i].X * scale + x + scale / 2,
-              points[i].Y * scale + y + scale / 2,
-              color
-            );
-        }
-    }
-}
 
 export default initializeCanvas;

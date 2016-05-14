@@ -10,12 +10,20 @@ import {
 import moodMeter from './moodMeter';
 import initializeCanvas from './draw';
 const shapes = ['circle', 'square', 'star', 'triangle', 'star', 'oxygen molecule'];
+let failCounter = 0;
 let index = 0;
 function displayQuestion() {
   if (index < shapes.length) {
-    $('#question').html(`Draw a ${shapes[index]}`);
+    const shape = shapes[index];
+    const img = shape.split(' ')[0];
+    $('#question').html(`Draw a ${shape}`);
+    $('#suggestion-box').css({
+      visibility: 'hidden',
+    });
+    $('#suggestion').html('WHAT EVER THE FUCK MUHD WANTS');
+    $('#suggestion-img').prop('src', `/images/${img}.png`);
   } else {
-    $('question').html('Congratulations!');
+    $('#question').html('Congratulations!');
   }
 }
 $(() => {
@@ -29,7 +37,14 @@ $(() => {
         snap()
         .then(imgBlob => post(imgBlob))
         .then((expressions) => {
-          // console.log(expressions);
+          if (expressions) {
+            const magnifiedX = Math.floor((expressions.happiness - expressions.sadness - expressions.disgust / 2 - expressions.anger) * 4 + 4);
+            if (magnifiedX < 4 && index < shapes.length) {
+              $('#suggestion-box').css({
+                visibility: 'visible',
+              });
+            }
+          }
           moodMeter.sendProps({
             expressions,
             shouldShowDetails: true,
@@ -42,23 +57,19 @@ $(() => {
       const { matches } = matchesObj;
       const rank = matches[0].Score.toFixed(2) * 100;
       if (rank > 1 && matches[0].Name.toLowerCase() === shapes[index]) {
-        index += 1;
+        failCounter = 0;
+        if (index === 2) {
+          index = 5;
+        } else index += 1;
         displayQuestion();
       } else {
-        console.log(matches[0].Name.toLowerCase());
-        console.log(shapes[index], index);
+        failCounter += 1;
+        if (failCounter >= 3 && index === 2) {
+          index = 3;
+          displayQuestion();
+        }
       }
     });
     displayQuestion();
   });
-  // .then((imgBlob) => {
-  //   console.log(imgBlob);
-  //   return post(imgBlob);
-  // })
-  // .then((res) => {
-  //   console.log(res);
-  // })
-  // .catch((err) => {
-  //   console.error(err);
-  // });
 });

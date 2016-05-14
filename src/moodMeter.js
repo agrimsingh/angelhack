@@ -125,7 +125,6 @@ const canvasStyle = {
 
 const canvas = $('#mood-meter');
 $(canvas).css(canvasStyle);
-console.log(canvas[0]);
 
 const drawer = new Drawer({
   canvasPixelWidth,
