@@ -1,0 +1,36 @@
+{
+  "name": "deep-shape",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.3.5",
+    "jquery": "^2.2.3",
+    "outlines": "0.0.7",
+    "superagent": "^1.8.3",
+    "superagent-promise": "^1.1.0",
+    "webrtc-adapter": "^1.1.0"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
+  },
+  "devDependencies": {
+    "babel-loader": "^6.2.4",
+    "babel-polyfill": "^6.8.0",
+    "babel-preset-es2015": "^6.6.0",
+    "eslint": "^2.10.0",
+    "eslint-config-airbnb": "^9.0.1",
+    "eslint-plugin-import": "^1.8.0",
+    "eslint-plugin-jsx-a11y": "^1.2.0",
+    "eslint-plugin-react": "^5.1.1",
+    "webpack": "^1.13.0",
+    "webpack-dev-server": "^1.14.1"
+  }
+}
