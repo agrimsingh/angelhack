@@ -54,9 +54,6 @@ function onMouseMove(event) {
   last = mouse;
 
   points.push(new outlines.Point(mouse.x, mouse.y, strokeId));
-
-  var matches = recognizer.Rank(points);
-  displayMatches(matches);
 }
 
 function onMouseUp(event) {
@@ -64,6 +61,9 @@ function onMouseUp(event) {
   event.stopPropagation();
 
   mouseIsDown = false;
+  const matches = recognizer.Rank(points);
+  displayMatches(matches);
+  $(window).trigger('shape', { matches });
 }
 
 function onTouchStart(event) {

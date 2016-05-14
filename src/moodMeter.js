@@ -87,7 +87,7 @@ class Drawer {
       this.magnifySquare(magnifiedX, magnifiedY);
       text = feelings[magnifiedY][magnifiedX];
     }
-    ctx.font = '30px Roboto';
+    ctx.font = '30px Raleway';
     ctx.textBaseline = 'middle';
     ctx.textAlign = 'center';
     ctx.fillStyle = `rgba(255, 255, 255, ${transparency})`;
