@@ -3,7 +3,7 @@ import outlines from 'outlines';
 import recognizer from './recognizer';
 import $ from 'jquery';
 
-const width = 320;
+const width = 480;
 const height = 480;
 const laneWidth = width / 8;
 const cvs = document.getElementById('canvas');
@@ -16,6 +16,10 @@ let strokeId = 0;
 
 cvs.width = width;
 cvs.height = height;
+$cvs.css({
+  border: '1px solid black',
+  margin: '0 auto',
+});
 
 function line(x0, y0, x1, y1, color) {
   ctx.strokeStyle = color || 'rgb(173, 216, 230)';
