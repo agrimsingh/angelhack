@@ -18,10 +18,12 @@ cvs.width = width;
 cvs.height = height;
 
 function line(x0, y0, x1, y1, color) {
-  ctx.strokeStyle = color || 'blue';
+  ctx.strokeStyle = color || 'rgb(173, 216, 230)';
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
-  ctx.lineWidth = 3;
+  ctx.lineWidth = 7;
+  ctx.shadowBlur = 7 + 2 * Math.random();
+  ctx.shadowColor = color || 'rgb(173, 216, 230)';
   ctx.beginPath();
   ctx.moveTo(x0, y0);
   ctx.lineTo(x1, y1);
@@ -56,14 +58,14 @@ function initializeCanvas() {
   ctx.clearRect(0, 0, cvs.width, cvs.height);
 
     // Draw all the set of shapes
-  for (let i = 0; i < recognizer.PointClouds.length; i++) {
-    drawPointCloud(
-      recognizer.PointClouds[i].Points,
-      (i % 8) * laneWidth,
-      380 + Math.floor(i / 8) * laneWidth,
-      laneWidth * 0.9, '#9f9fff'
-    );
-  }
+//   for (let i = 0; i < recognizer.PointClouds.length; i++) {
+//     drawPointCloud(
+//       recognizer.PointClouds[i].Points,
+//       (i % 8) * laneWidth,
+//       380 + Math.floor(i / 8) * laneWidth,
+//       laneWidth * 0.9, '#9f9fff'
+//     );
+//   }
 }
 
 function getShade(score) {

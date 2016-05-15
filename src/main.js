@@ -2,6 +2,8 @@ import 'webrtc-adapter';
 import $ from 'jquery';
 import promiseWhile from './promiseWhile';
 import Promise from 'bluebird';
+import randomJs from 'random-js'; // uses the nativeMath engine
+const random = randomJs();
 import {
   init,
   snap,
@@ -10,8 +12,14 @@ import {
 import moodMeter from './moodMeter';
 import initializeCanvas from './draw';
 const shapes = ['circle', 'square', 'star', 'triangle', 'star', 'oxygen molecule'];
+const lines = [
+  'Hello there, you look a little confused! Here\'s a quick tip.',
+  'One thing I learned is to never give up when the going gets tough. Here\'s a quick tip.',
+  'Here\'s a quick tip for this drawing.',
+];
 let failCounter = 0;
 let index = 0;
+let suggestionAudioPlayed = false;
 function displayQuestion() {
   if (index < shapes.length) {
     const shape = shapes[index];
@@ -20,8 +28,11 @@ function displayQuestion() {
     $('#suggestion-box').css({
       visibility: 'hidden',
     });
-    $('#suggestion').html('WHAT EVER THE FUCK MUHD WANTS');
+    const lineIndex = random.integer(0, 2);
+    $('#suggestion').html(lines[lineIndex]);
+    $('#suggestion-audio').prop('src', `/audio/output${lineIndex}.wav`);
     $('#suggestion-img').prop('src', `/images/${img}.png`);
+    suggestionAudioPlayed = false;
   } else {
     $('#question').html('Congratulations!');
   }
@@ -43,6 +54,10 @@ $(() => {
               $('#suggestion-box').css({
                 visibility: 'visible',
               });
+              if (!suggestionAudioPlayed) {
+                $('#suggestion-audio')[0].play();
+                suggestionAudioPlayed = true;
+              }
             }
           }
           moodMeter.sendProps({
