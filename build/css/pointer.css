@@ -26,3 +26,12 @@ body {
             font-family: Arial;
             font-size: 32px;
         }
+        #alphabet{
+            cursor: pointer;
+            clear: both;
+            width: 300px;
+            height: 32px;
+            color: #9f3f3f;
+            font-family: Arial;
+            font-size: 16px;
+        }
