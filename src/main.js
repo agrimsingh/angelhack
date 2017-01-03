@@ -11,8 +11,9 @@ import {
 } from './webcam';
 import moodMeter from './moodMeter';
 import initializeCanvas from './draw';
-const shapes = ['circle', 'square', 'triangle', 'star', 'oxygen molecule'];
-const easy = ['circle', 'square']
+const diagrams = ['circle', 'square', 'triangle', 'star', 'oxygen molecule'];
+const alphabets_numbers = ['2', '3', 't', 'n', 'w'];
+var shapes = diagrams;
 const lines = [
   'Hello there, you look a little confused! Here\'s a quick tip.',
   'One thing I learned is to never give up when the going gets tough. Here\'s a quick tip.',
@@ -20,12 +21,13 @@ const lines = [
 ];
 let failCounter = 0;
 let index = 0;
+let changeIndex = 0;
 let suggestionAudioPlayed = false;
 function displayQuestion() {
   if (index < shapes.length) {
     const shape = shapes[index];
     const img = shape.split(' ')[0];
-    $('#question').html(`Draw a ${shape}`);
+    $('#question').html(`Draw a ${shape.toUpperCase()}`);
     $('#suggestion-box').css({
       visibility: 'hidden',
     });
@@ -38,6 +40,25 @@ function displayQuestion() {
     $('#question').html('Congratulations!');
   }
 }
+
+const alphabetButton = document.getElementById('alphabet');
+alphabetButton.addEventListener('click', resetAlphabet);
+
+function resetAlphabet() {
+  index = 0;
+//  shapes = alphabets_numbers;
+//  $('#question').html(`Draw the number ${shapes[index]}`);
+  if (changeIndex % 2 == 0) {
+    shapes = alphabets_numbers;
+    $('#question').html(`Draw the number ${shapes[index]}`);
+    $('#alphabet').html(`Change to Shapes`)
+  } else {
+    shapes = diagrams;
+    $('#question').html(`Draw a ${shapes[index]}`);
+    $('#alphabet').html(`Change to Alphabets & Numbers`)
+  };
+  changeIndex += 1;
+};
 
 $(() => {
   initializeCanvas();
@@ -79,7 +100,7 @@ $(() => {
         displayQuestion();
       } else {
         failCounter += 1;
-        if (failCounter >= 3 && index >= 2) {
+        if (failCounter >= 5 && index >= 2) {
 	  index -=1;
 	  failCounter = 0;
 //          index = 3;
