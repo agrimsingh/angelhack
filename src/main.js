@@ -11,7 +11,8 @@ import {
 } from './webcam';
 import moodMeter from './moodMeter';
 import initializeCanvas from './draw';
-const shapes = ['circle', 'square', 'star', 'triangle', 'star', 'oxygen molecule'];
+const shapes = ['circle', 'square', 'triangle', 'star', 'oxygen molecule'];
+const easy = ['circle', 'square']
 const lines = [
   'Hello there, you look a little confused! Here\'s a quick tip.',
   'One thing I learned is to never give up when the going gets tough. Here\'s a quick tip.',
@@ -37,6 +38,7 @@ function displayQuestion() {
     $('#question').html('Congratulations!');
   }
 }
+
 $(() => {
   initializeCanvas();
   init()
@@ -73,15 +75,15 @@ $(() => {
       const rank = matches[0].Score.toFixed(2) * 100;
       if (rank > 1 && matches[0].Name.toLowerCase() === shapes[index]) {
         failCounter = 0;
-        if (index === 2) {
-          index = 5;
-        } else index += 1;
+	index +=1;
         displayQuestion();
       } else {
         failCounter += 1;
-        if (failCounter >= 3 && index === 2) {
-          index = 3;
-          displayQuestion();
+        if (failCounter >= 3 && index >= 2) {
+	  index -=1;
+	  failCounter = 0;
+//          index = 3;
+	  displayQuestion();
         }
       }
     });
