@@ -42,7 +42,7 @@ export const snap = () => {
 
 export const post = (imgBlob) => {
   const req = request
-  .post('http://facerecog.io:3001/')
+  .post('http://emotion.facerecog.io:3001/')
   .field('imgFile', imgBlob);
   return req.end().then((res) => {
     if (res.body.status === 'error') {
