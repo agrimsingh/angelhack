@@ -30,6 +30,16 @@ recognizer.PointClouds.push(new PointCloud('W', [
   new Point(15, 5, 4), new Point(15, 0, 4),
 ]));
 
+// 2 shape
+recognizer.PointClouds.push(new PointCloud('2', [
+  new Point(0, 1, 1), new Point(1, 0, 1), new Point(2, 0, 1), new Point(3, 0, 1), new Point(4, 1, 1), new Point(4, 2, 1), new Point(3, 3, 1), new Point(2, 4, 1), new Point(1, 5, 1), new Point(0, 6, 1), new Point(1, 6, 1), new Point(2, 6, 1), new Point(3, 6, 1), new Point(4, 6, 1),
+]));
+
+// 3 shape
+recognizer.PointClouds.push(new PointCloud('3', [
+  new Point(0, 1, 1), new Point(1, 0, 1), new Point(2, 0, 1), new Point(3, 0, 1), new Point(4, 1, 1), new Point(4, 2, 1), new Point(3, 3, 1), new Point(2, 3, 1), new Point (3, 3, 1), new Point(4, 4, 1), new Point(4, 5, 1), new Point(3, 6, 1), new Point(2, 6, 1), new Point(1, 6, 1), new Point(0, 5, 1)
+]));
+
 // Oxygen shape
 recognizer.PointClouds.push(new PointCloud('Oxygen Molecule', [
   new Point(382, 310, 1), new Point(377, 308, 1), new Point(373, 307, 1), new Point(366, 307, 1), new Point(360, 310, 1), new Point(356, 313, 1), new Point(353, 316, 1), new Point(349, 321, 1), new Point(347, 326, 1), new Point(344, 331, 1), new Point(342, 337, 1), new Point(341, 343, 1), new Point(341, 350, 1), new Point(341, 358, 1), new Point(342, 362, 1), new Point(344, 366, 1), new Point(347, 370, 1), new Point(351, 374, 1), new Point(356, 379, 1), new Point(361, 382, 1), new Point(368, 385, 1), new Point(374, 387, 1), new Point(381, 387, 1), new Point(390, 387, 1), new Point(397, 385, 1), new Point(404, 382, 1), new Point(408, 378, 1), new Point(412, 373, 1), new Point(416, 367, 1), new Point(418, 361, 1), new Point(419, 353, 1), new Point(418, 346, 1), new Point(417, 341, 1), new Point(416, 336, 1), new Point(413, 331, 1), new Point(410, 326, 1), new Point(404, 320, 1), new Point(400, 317, 1), new Point(393, 313, 1), new Point(392, 312, 1),
