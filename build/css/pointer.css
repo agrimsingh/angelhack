@@ -19,8 +19,8 @@ body {
         #cancel{
             cursor: pointer;
             clear: both;
-            width: 480px;
-            height: 32px;
+            /*width: 480px;*/
+            height: 64px;
             text-align: center;
             color: #9f3f3f;
             font-family: Arial;
@@ -29,9 +29,9 @@ body {
         #alphabet{
             cursor: pointer;
             clear: both;
-            width: 300px;
+            /*width: 300px;
             height: 32px;
             color: #9f3f3f;
             font-family: Arial;
-            font-size: 16px;
+            font-size: 16px;*/
         }

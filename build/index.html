@@ -30,7 +30,7 @@
 </body>-->
 
 <head>
-<title>AngelHack Singapore</title>
+<title>Deep Question</title>
 
 <!--<meta name="viewport" content="width=device-width,user-scalable=no" />-->
 <meta name="description" content="Angelhack Hack">
@@ -43,16 +43,49 @@
 <link rel="stylesheet" href="css/normalize.css">
 <link rel="stylesheet" href="css/skeleton.css">
 <link rel="stylesheet" href="css/pointer.css">
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Lato">
+<link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
+
+<link rel="stylesheet" href="https://unpkg.com/purecss@0.6.1/build/pure-min.css" integrity="sha384-" crossorigin="anonymous">
+    
+    
+    
+        <!--[if lte IE 8]>
+            <link rel="stylesheet" href="css/layouts/gallery-grid-old-ie.css">
+        <![endif]-->
+        <!--[if gt IE 8]><!-->
+            <link rel="stylesheet" href="css/layouts/gallery-grid.css">
+        <!--<![endif]-->
+        <!--[if lte IE 8]>
+            <link rel="stylesheet" href="css/layouts/gallery-old-ie.css">
+        <![endif]-->
+        <!--[if gt IE 8]><!-->
+            <link rel="stylesheet" href="css/layouts/gallery.css">
+        <!--<![endif]-->
 
 </head>
 <body>
+    <div class="header">
+        <div class="pure-menu pure-menu-horizontal">
+            <a class="pure-menu-heading" href="">Deep Question</a>
+
+            <ul class="pure-menu-list">
+                <li class="pure-menu-item pure-menu-selected"><a href="#" class="pure-menu-link">Home</a></li>
+                <li class="pure-menu-item" id="alphabet"><a href="#" class="pure-menu-link">Change to Alphabets and Numbers</a></li>
+                <li class="pure-menu-item"><a href="#" class="pure-menu-link">Neural Doodle</a></li>
+            </ul>
+        </div>
+    </div>
   <div class="container">
     <h1 align="center">Deep Question</h1>
     <div class="row">
       <div class="four columns">
-	<div id ="alphabet">Change to Alphabets & Numbers</div>
+	<!--<div id ="alphabet">Change to Alphabets & Numbers</div>-->
+  <h5>Camera</h5>
         <video id="video"></video>
+        <h5>Mood Meter</h5>
         <canvas id="mood-meter"></canvas>
+        <h5>Suggestions/Support</h5>
         <div id="suggestion-box">
           <p id="suggestion"></p>
           <img id="suggestion-img" src="" style="width:100%;" />
@@ -60,11 +93,12 @@
         </div>
       </div>
       <div class="eight columns">
-        <p id="question"></p>
+        <h2 id="question"></h2>
         <div id="container1">
           <div id="matches"></div>
-          <canvas id="canvas"></canvas>
-          <div id="cancel">Clear</div>
+          <canvas id="canvas" style="background:url(yellow.jpg); box-shadow: 5px 5px 3px black ;"></canvas>
+          <!--<div id="cancel">Clear</div>-->
+          <img src = "eraser.png" id="cancel" />
         </div>
       </div>
     </div>

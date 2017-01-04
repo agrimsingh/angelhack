@@ -22,12 +22,14 @@ $cvs.css({
 });
 
 function line(x0, y0, x1, y1, color) {
-  ctx.strokeStyle = color || 'rgb(173, 216, 230)';
+  // ctx.strokeStyle = color || 'rgb(173, 216, 230)';
+  ctx.strokeStyle = color || 'rgb(0, 0, 0)';
+
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
   ctx.lineWidth = 7;
   ctx.shadowBlur = 7 + 2 * Math.random();
-  ctx.shadowColor = color || 'rgb(173, 216, 230)';
+  // ctx.shadowColor = color || 'rgb(173, 216, 230)';
   ctx.beginPath();
   ctx.moveTo(x0, y0);
   ctx.lineTo(x1, y1);
