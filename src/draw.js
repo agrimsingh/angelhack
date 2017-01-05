@@ -13,6 +13,7 @@ let last;
 let mouseIsDown = false;
 let points = [];
 let strokeId = 0;
+var inkColor = 'rgb(0, 0, 255)'
 
 cvs.width = width;
 cvs.height = height;
@@ -23,7 +24,7 @@ $cvs.css({
 
 function line(x0, y0, x1, y1, color) {
   // ctx.strokeStyle = color || 'rgb(173, 216, 230)';
-  ctx.strokeStyle = color || 'rgb(0, 0, 0)';
+  ctx.strokeStyle = color || inkColor;
 
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
@@ -190,7 +191,6 @@ function reset(event) {
 //   const result = recognizer.Recognize(points);
   points = [];
   strokeId = 0;
-
     // Clear our matched display info
   initializeCanvas();
   document.getElementById('matches').innerHTML = '';
@@ -203,6 +203,12 @@ cancelButton.addEventListener('mousedown', reset, true);
 document.addEventListener('keydown', (event) => {
   if (event.keyCode === 32) {
     reset(event);
+  } else if (event.keyCode === 82) {
+    inkColor = 'rgb(255, 0, 0)';
+  } else if (event.keyCode === 66) {
+    inkColor = 'rgb(0, 0, 255)';
+  } else if (event.keyCode === 71) {
+    inkColor = 'rgb(0, 255, 0)';
   }
 }, false);
 
