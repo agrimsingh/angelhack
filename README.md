@@ -3,8 +3,10 @@
 
 2. Install the dependencies of package.json and it requires nodejs version 6
 ```
+$ npm install -g webpack-dev-server
 $ npm install
 ```
+
 3. You can now run the application
 ```
 $ webpack-dev-server --host 0.0.0.0
