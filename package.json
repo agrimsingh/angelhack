@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "babel-core": "^6.21.0",
     "bluebird": "^3.3.5",
     "jquery": "^2.2.3",
     "lodash": "^4.12.0",
