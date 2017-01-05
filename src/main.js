@@ -11,6 +11,9 @@ import {
 } from './webcam';
 import moodMeter from './moodMeter';
 import initializeCanvas from './draw';
+
+const doodlyUrl = 'http://localhost:3000';
+
 const diagrams = ['circle', 'square', 'triangle', 'star', 'oxygen molecule'];
 const alphabets_numbers = ['2', '3', 't', 'n', 'w'];
 var shapes = diagrams;
@@ -83,30 +86,19 @@ function resetAlphabet() {
     var draw_canvas = document.getElementById('canvas');
     var imagefile = draw_canvas.toDataURL("image/png");
     var base64img = imagefile.replace("data:image/png;base64,", "");
-      $.ajax({
-             type: "POST",
-             url: "http://192.168.48.229:3000/image/",
-             data: base64img,// now data come in this function
-             dataType: "text",
-	     processData: false,
-	     contentType: false,
-	     async: false,
-             crossDomain: true,
-             success: function (data, status) {
-
-                 alert(data);// write success in " "
-             },
-
-             error: function (data, status) {
-                 // error handler
-                console.log('Changing canvas');
-		setTimeout(function() {
-		  $('#canvas').replaceWith('<img src="http://192.168.48.229:10000/neural.jpg"/>');
-		}, 30000);
-             }
-          });
-//    $('#canvas').replaceWith('<img src="'+imagefile+'"/>');
-//    $('#canvas').replaceWith('<img src="http://orig06.deviantart.net/37e6/f/2009/034/7/1/chaoscope_spin_by_jhhwild.gif"/>');
+    fetch(`${doodlyUrl}/image/`, {
+      method: 'POST',
+      body: base64img,
+    })
+    .then(response => response.json())
+    .then((payload) => {
+      console.log('likemo url:', payload.url);
+      const img = $('<img />', {
+        src: payload.url,
+      });
+      $('#canvas').replaceWith(img);
+    })
+    ;
   };
   changeIndex += 1;
 };
@@ -116,28 +108,20 @@ function neuralDoodle() {
     var draw_canvas = document.getElementById('canvas');
     var imagefile = draw_canvas.toDataURL("image/png");
     var base64img = imagefile.replace("data:image/png;base64,", "");
-      $.ajax({
-             type: "POST",
-             url: "http://192.168.48.229:3000/image/",
-             data: base64img,// now data come in this function
-             dataType: "text",
-	     processData: false,
-	     contentType: false,
-	     async: false,
-             crossDomain: true,
-             success: function (data, status) {
-
-                 alert(data);// write success in " "
-             },
-
-             error: function (data, status) {
-                 // error handler
-                console.log('Changing canvas');
-		setTimeout(function() {
-		  $('#canvas').replaceWith('<img src="http://192.168.48.229:10000/neural.jpg"/>');
-		}, 10000);
-             }
-          });
+    fetch(`${doodlyUrl}/image/`, {
+      method: 'POST',
+      body: base64img,
+    })
+    .then(response => response.json())
+    .then((payload) => {
+      console.log('likemo url:', payload.url);
+      const img = $('<img />', {
+        src: payload.url,
+      });
+      $('#canvas').replaceWith(img);
+      $('#neural-doodle').html('<a href="#" class="pure-menu-link">Neural Doodle</a>');
+    })
+    ;
 };
 
 $(() => {
