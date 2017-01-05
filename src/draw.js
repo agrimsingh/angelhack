@@ -196,20 +196,30 @@ function reset(event) {
   document.getElementById('matches').innerHTML = '';
 }
 
-const cancelButton = document.getElementById('cancel');
-cancelButton.addEventListener('touchstart', reset, false);
-cancelButton.addEventListener('mousedown', reset, true);
-
-document.addEventListener('keydown', (event) => {
-  if (event.keyCode === 32) {
-    reset(event);
-  } else if (event.keyCode === 82) {
+$(function () {
+  const cancelButton = document.getElementById('cancel');
+  cancelButton.addEventListener('touchstart', reset, false);
+  cancelButton.addEventListener('mousedown', reset, true);
+  document.addEventListener('keydown', (event) => {
+    if (event.keyCode === 32) {
+      reset(event);
+    } else if (event.keyCode === 82) {
+      inkColor = 'rgb(255, 0, 0)';
+    } else if (event.keyCode === 66) {
+      inkColor = 'rgb(0, 0, 255)';
+    } else if (event.keyCode === 71) {
+      inkColor = 'rgb(0, 255, 0)';
+    }
+  }, false);
+  $('#red-button').click(function() {
     inkColor = 'rgb(255, 0, 0)';
-  } else if (event.keyCode === 66) {
-    inkColor = 'rgb(0, 0, 255)';
-  } else if (event.keyCode === 71) {
+  });
+  $('#green-button').click(function() {
     inkColor = 'rgb(0, 255, 0)';
-  }
-}, false);
+  });
+  $('#blue-button').click(function() {
+    inkColor = 'rgb(0, 0, 255)';
+  });
+});
 
 export default initializeCanvas;
