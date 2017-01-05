@@ -41,23 +41,103 @@ function displayQuestion() {
   }
 }
 
+function base64ToBlob(base64, mime) 
+{
+    mime = mime || '';
+    var sliceSize = 1024;
+    var byteChars = window.atob(base64);
+    var byteArrays = [];
+
+    for (var offset = 0, len = byteChars.length; offset < len; offset += sliceSize) {
+        var slice = byteChars.slice(offset, offset + sliceSize);
+
+        var byteNumbers = new Array(slice.length);
+        for (var i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        var byteArray = new Uint8Array(byteNumbers);
+
+        byteArrays.push(byteArray);
+    }
+
+    return new Blob(byteArrays, {type: mime});
+}
+
 const alphabetButton = document.getElementById('alphabet');
 alphabetButton.addEventListener('click', resetAlphabet);
 
+const neuralButton = document.getElementById('neural-doodle');
+neuralButton.addEventListener('click', neuralDoodle);
+
 function resetAlphabet() {
   index = 0;
-//  shapes = alphabets_numbers;
-//  $('#question').html(`Draw the number ${shapes[index]}`);
   if (changeIndex % 2 == 0) {
     shapes = alphabets_numbers;
     $('#question').html(`Draw the number ${shapes[index]}`);
-    $('#alphabet').html(`Change to Shapes`)
+    $('#alphabet').html(`Change to Shapes`);
   } else {
     shapes = diagrams;
     $('#question').html(`Draw a ${shapes[index]}`);
-    $('#alphabet').html(`Change to Alphabets & Numbers`)
+    $('#alphabet').html(`Change to Alphabets & Numbers`);
+    var draw_canvas = document.getElementById('canvas');
+    var imagefile = draw_canvas.toDataURL("image/png");
+    var base64img = imagefile.replace("data:image/png;base64,", "");
+      $.ajax({
+             type: "POST",
+             url: "http://192.168.48.229:3000/image/",
+             data: base64img,// now data come in this function
+             dataType: "text",
+	     processData: false,
+	     contentType: false,
+	     async: false,
+             crossDomain: true,
+             success: function (data, status) {
+
+                 alert(data);// write success in " "
+             },
+
+             error: function (data, status) {
+                 // error handler
+                console.log('Changing canvas');
+		setTimeout(function() {
+		  $('#canvas').replaceWith('<img src="http://192.168.48.229:10000/neural.jpg"/>');
+		}, 30000);
+             }
+          });
+//    $('#canvas').replaceWith('<img src="'+imagefile+'"/>');
+//    $('#canvas').replaceWith('<img src="http://orig06.deviantart.net/37e6/f/2009/034/7/1/chaoscope_spin_by_jhhwild.gif"/>');
   };
   changeIndex += 1;
+};
+
+function neuralDoodle() {
+    $('#neural-doodle').html(`Doing some deep learning...`);
+    var draw_canvas = document.getElementById('canvas');
+    var imagefile = draw_canvas.toDataURL("image/png");
+    var base64img = imagefile.replace("data:image/png;base64,", "");
+      $.ajax({
+             type: "POST",
+             url: "http://192.168.48.229:3000/image/",
+             data: base64img,// now data come in this function
+             dataType: "text",
+	     processData: false,
+	     contentType: false,
+	     async: false,
+             crossDomain: true,
+             success: function (data, status) {
+
+                 alert(data);// write success in " "
+             },
+
+             error: function (data, status) {
+                 // error handler
+                console.log('Changing canvas');
+		setTimeout(function() {
+		  $('#canvas').replaceWith('<img src="http://192.168.48.229:10000/neural.jpg"/>');
+		}, 10000);
+             }
+          });
 };
 
 $(() => {
@@ -103,7 +183,6 @@ $(() => {
         if (failCounter >= 5 && index >= 2) {
 	  index -=1;
 	  failCounter = 0;
-//          index = 3;
 	  displayQuestion();
         }
       }
